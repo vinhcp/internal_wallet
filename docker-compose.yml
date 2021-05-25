@@ -1,0 +1,31 @@
+version: '3'
+services:
+  app:
+    build: .
+    command: rails s -b 0.0.0.0 -p 3000
+    ports:
+      - 3000:3000
+    environment:
+      - RAILS_ENV=development
+      - POSTGRES_HOSTNAME=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=iwallet_development
+      - POSTGRES_USER=iwallet
+      - POSTGRES_PASSWORD=iwallet
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+      - bundle_cache:/usr/local/bundle
+    stdin_open: true
+    tty: true
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=iwallet_development
+      - POSTGRES_USER=iwallet
+      - POSTGRES_PASSWORD=iwallet
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+volumes:
+  bundle_cache:

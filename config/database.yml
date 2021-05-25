@@ -1,0 +1,18 @@
+development: &default
+  adapter: postgresql
+  encoding: unicode
+  database: <%= ENV['POSTGRES_DB'] || 'iwallet_development' %>
+  username: <%= ENV['POSTGRES_USER'] || 'iwallet' %>
+  password: <%= ENV['POSTGRES_PASSWORD'] || 'abc123' %>
+  host: <%= ENV['POSTGRES_HOSTNAME'] || 'localhost' %>
+  port: <%= ENV['POSTGRES_PORT'] || '5432' %>
+  pool: <%= ENV["DB_POOL"] || ENV['RAILS_MAX_THREADS'] || 5 %>
+  reconnect: true
+
+test:
+  <<: *default
+  database: iwallet_test
+
+production:
+  <<: *default
+  database: iwallet_production
