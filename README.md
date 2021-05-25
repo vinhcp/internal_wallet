@@ -12,6 +12,14 @@
 ## Running the App
 `docker-compose up`
 
+## Test accounts
+
+There're 10 accounts for each entity type user/team/stock
+
+Sample account: 
+
+email: [type][sequence]@example.com / password: password (sequence range from 1 to 10)
+
 ## Optional: Install without docker
 - Ruby 3.0.1
 - Postgresql 13
