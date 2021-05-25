@@ -17,18 +17,18 @@ ActiveRecord::Schema.define(version: 2021_05_25_040616) do
 
   create_table "transactions", force: :cascade do |t|
     t.string "tx_id"
-    t.integer "transaction_type"
+    t.string "type"
     t.decimal "amount", precision: 10, scale: 2
-    t.integer "creditor_id"
-    t.string "creditor_wallet_address"
-    t.integer "debtor_id"
-    t.string "debtor_wallet_address"
+    t.integer "source_wallet_id"
+    t.integer "target_wallet_id"
     t.integer "status"
+    t.jsonb "reason"
+    t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["creditor_id"], name: "index_transactions_on_creditor_id"
-    t.index ["debtor_id"], name: "index_transactions_on_debtor_id"
-    t.index ["tx_id"], name: "index_transactions_on_tx_id"
+    t.index ["source_wallet_id"], name: "index_transactions_on_source_wallet_id"
+    t.index ["target_wallet_id"], name: "index_transactions_on_target_wallet_id"
+    t.index ["user_id"], name: "index_transactions_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|

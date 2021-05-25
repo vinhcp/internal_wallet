@@ -1,0 +1,23 @@
+%br
+- if @transactions.present?
+  %table.table#transactions-table
+    %thead.thead-dark
+      %tr
+        %th{:scope => "col"} Tx ID
+        %th{:scope => "col"} Type
+        %th{:scope => "col"} Amount
+        %th{:scope => "col"} Source Wallet
+        %th{:scope => "col"} Target Wallet
+        %th{:scope => "col"} Status
+    %tbody
+      - @transactions.each do |transaction|
+        %tr
+          %td= transaction.tx_id
+          %td= transaction.transaction_type
+          %td= transaction.amount
+          %td= transaction.source_wallet.try(:address)
+          %td= transaction.target_wallet.try(:address)
+          %td.status
+            %span{ class: transaction.status }= transaction.status.capitalize
+- else
+  %h2.text-center You have no transactions

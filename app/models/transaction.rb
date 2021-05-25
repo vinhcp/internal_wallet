@@ -1,25 +1,48 @@
 class Transaction < ApplicationRecord
+  include TransactionTypeManagement
+
   TX_ID_LENGTH = 32
+  MIN_AMOUNT = 1
+  NEGATIVE_RATE = -1
+  STATUSES = { request: 0, processing: 1, success: 2, failed: 3 }.freeze
 
-  belongs_to :creditor, class_name: 'User', foreign_key: :creditor_id
-  belongs_to :debtor, class_name: 'User', foreign_key: :debtor_id
+  attr_accessor :target_wallet_address
 
-  validates_presence_of :creditor_id, :debtor_id, :creditor_wallet_address,
-                        :debtor_wallet_address, :amount, :tx_id
+  belongs_to :source_wallet, class_name: 'Wallet', foreign_key: :source_wallet_id, optional: true
+  belongs_to :target_wallet, class_name: 'Wallet', foreign_key: :target_wallet_id, optional: true
+  belongs_to :user
+
+  validates_presence_of :amount, :tx_id
   validates_uniqueness_of :tx_id
+  validates_numericality_of :amount, greater_than_or_equal_to: MIN_AMOUNT
 
-  enum status: { request: 0, processing: 1, success: 2, failed: 3 }
-  enum transaction_type: { deposit: 0, withdraw: 1, transfer: 0 }
+  enum status: STATUSES
 
   after_initialize do
     self.status = 0 if self.status.blank?
   end
 
-  before_validation :generate_address
+  before_validation :generate_tx_id
+  before_validation :assign_wallet
+
+  def self.for_user(user)
+    where('source_wallet_id = :wallet_id or target_wallet_id = :wallet_id',
+          wallet_id: user.wallet.id)
+  end
+
+  def negative_amount
+    amount * NEGATIVE_RATE
+  end
+
+  def positive_amount
+    amount
+  end
 
   private
 
-  def generate_address
+  def generate_tx_id
+    return if tx_id.present?
+
     self.tx_id = loop do
       random_token = SecureRandom.urlsafe_base64(TX_ID_LENGTH, false)
       break random_token unless self.class.exists?(tx_id: random_token)

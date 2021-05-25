@@ -6,8 +6,7 @@ class User < ApplicationRecord
          :trackable
 
   has_one :wallet
-  has_many :credit_transactions, class_name: 'Transaction', foreign_key: :creditor_id
-  has_many :debit_transactions, class_name: 'Transaction', foreign_key: :debtor_id
+  has_many :transactions
 
   after_create :create_wallet
 end

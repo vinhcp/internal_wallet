@@ -10,5 +10,5 @@
   %body
     = render 'layouts/header'
     = render 'layouts/flash_messages'
-    .container
+    %div{ class: params[:controller] == 'transactions' && params[:action] == 'index' ? 'container-fluid' : 'container' }
       = yield

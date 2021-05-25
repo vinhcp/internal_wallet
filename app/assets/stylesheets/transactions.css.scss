@@ -1,0 +1,10 @@
+#transactions-table {
+  td.status {
+    span.failed {
+      color: red;
+    }
+    span.success {
+      color: green;
+    }
+  }
+}

@@ -1,0 +1,14 @@
+.login-form
+  %h2 Internal Wallet Login
+  = simple_form_for resource, as: resource_name, url: session_path(resource_name) do |f|
+    = f.input :email, wrapper_html: { class: 'form-group' }, input_html: { class: 'form-control', placeholder: 'Your email' }, label: false
+    = f.input :password, wrapper_html: { class: 'form-group' }, input_html: { class: 'form-control', placeholder: 'Your password' }, label: false
+    .clearfix
+      - if devise_mapping.rememberable?
+        .float-left
+          = f.input :remember_me, as: :boolean, boolean_style: :inline, wrapper_html: { class: 'form-group' }
+      .float-right
+        = render "auth/shared/links"
+
+
+    = f.button :submit, 'Log in', class: 'btn btn-info'
