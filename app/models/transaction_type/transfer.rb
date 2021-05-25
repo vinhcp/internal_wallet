@@ -5,8 +5,8 @@ module TransactionType
     validate :source_wallet_cannot_be_target_wallet
 
     def perform
-      source_wallet.transfer!(negative_amount)
-      target_wallet.transfer!(positive_amount)
+      source_wallet.recalculate_amount!
+      target_wallet.recalculate_amount!
     end
 
     private

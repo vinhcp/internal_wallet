@@ -3,7 +3,7 @@ module TransactionType
     validates_presence_of :target_wallet_id
 
     def perform
-      target_wallet.transfer!(positive_amount)
+      target_wallet.recalculate_amount!
     end
 
     private

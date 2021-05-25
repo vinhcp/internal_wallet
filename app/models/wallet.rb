@@ -11,8 +11,8 @@ class Wallet < ApplicationRecord
 
   before_validation :generate_address
 
-  def transfer!(amount)
-    self.amount += amount
+  def recalculate_amount!
+    self.amount = Transaction.for_wallet(self).map { |tx| tx.actual_amount(self) }.inject(0, :+)
     save!
   end
 

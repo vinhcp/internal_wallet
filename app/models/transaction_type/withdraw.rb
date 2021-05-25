@@ -3,7 +3,7 @@ module TransactionType
     validates_presence_of :source_wallet_id
 
     def perform
-      source_wallet.transfer!(negative_amount)
+      source_wallet.recalculate_amount!
     end
 
     private

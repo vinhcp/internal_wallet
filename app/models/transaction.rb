@@ -25,9 +25,9 @@ class Transaction < ApplicationRecord
   before_validation :generate_tx_id
   before_validation :assign_wallet
 
-  def self.for_user(user)
+  def self.for_wallet(wallet)
     where('source_wallet_id = :wallet_id or target_wallet_id = :wallet_id',
-          wallet_id: user.wallet.id)
+          wallet_id: wallet.id)
   end
 
   def negative_amount
@@ -36,6 +36,10 @@ class Transaction < ApplicationRecord
 
   def positive_amount
     amount
+  end
+
+  def actual_amount(wallet = nil)
+    wallet == source_wallet ? negative_amount : positive_amount
   end
 
   private

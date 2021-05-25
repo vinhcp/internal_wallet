@@ -3,7 +3,7 @@ class TransactionsController < ApplicationController
   before_action :new_transaction, only: %i[new create]
 
   def index
-    @transactions = Transaction.for_user(current_user)
+    @transactions = Transaction.for_wallet(current_user.wallet)
   end
 
   def new; end
