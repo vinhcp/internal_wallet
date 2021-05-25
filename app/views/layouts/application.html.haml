@@ -8,4 +8,7 @@
     = stylesheet_link_tag 'application', media: 'all'
     = javascript_pack_tag 'application'
   %body
-    = yield
+    = render 'layouts/header'
+    = render 'layouts/flash_messages'
+    .container
+      = yield
