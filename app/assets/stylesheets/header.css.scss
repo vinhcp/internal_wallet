@@ -3,6 +3,11 @@
     margin-right: 10px;
   }
   .info {
+    &:after {
+      content: '|';
+      padding-left: .5em;
+      padding-right: .5em;
+    }
     span {
       font-weight: bold;
     }
