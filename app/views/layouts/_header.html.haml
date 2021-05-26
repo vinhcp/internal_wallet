@@ -4,18 +4,16 @@
     %span.navbar-toggler-icon
   #navbarSupportedContent.collapse.navbar-collapse
     %ul.navbar-nav.mr-auto
-
-
     - if current_user
       .info
         Your Wallet:
-        %span= current_user.wallet.address
+        %span= current_wallet.address
       .info
         Member Type:
         %span= current_user.type || 'User'
       .info
         Current Amount:
-        %span= current_user.wallet.amount
+        %span= current_wallet.amount
 
       - Transaction.transaction_types.each do |type|
         .action

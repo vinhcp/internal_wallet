@@ -3,5 +3,6 @@
   - alert_type = 'danger' if type == 'error'
   - alert_type = 'success' if type == 'notice'
   - alert_type = 'warning' if type == 'alert'
-  .alert{ class: "alert-#{alert_type}" }
+  .alert.alert-dismissible{ class: "alert-#{alert_type}" }
+    %a.close{"aria-label" => "close", "data-dismiss" => "alert", :href => "#"} ×
     = msg

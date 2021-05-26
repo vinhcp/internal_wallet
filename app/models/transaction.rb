@@ -27,9 +27,10 @@ class Transaction < ApplicationRecord
   before_validation :generate_tx_id
   before_validation :assign_wallet
 
-  scope :available, ->{ where(status: [Transaction.statuses[:processing], Transaction.statuses[:success]]) }
-  scope :for_wallet, -> (wallet) { where('source_wallet_id = :wallet_id or target_wallet_id = :wallet_id',
-                                   wallet_id: wallet.id) if wallet.present? }
+  scope :available, -> { where(status: [Transaction.statuses[:processing], Transaction.statuses[:success]]) }
+  scope :for_wallet, lambda { |wallet|
+    where('source_wallet_id = :wallet_id or target_wallet_id = :wallet_id', wallet_id: wallet.id)
+  }
 
   def negative_amount
     amount * NEGATIVE_RATE
