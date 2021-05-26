@@ -12,7 +12,7 @@ class TransactionService
       transaction.success!
     end
   rescue ActiveRecord::RecordInvalid => exception
-    transaction.reason = { message: exception.message, details: exception.backtrace }
+    transaction.reason = { message: exception.message.sub('Validation failed: ', ''), details: exception.backtrace }
     transaction.save
     transaction.failed!
   end

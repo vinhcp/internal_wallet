@@ -4,15 +4,18 @@
     %thead.thead-dark
       %tr
         %th{:scope => "col"} Tx ID
+        %th{:scope => "col"} Timestamp
         %th{:scope => "col"} Type
         %th{:scope => "col"} Amount
         %th{:scope => "col"} Source Wallet
         %th{:scope => "col"} Target Wallet
         %th{:scope => "col"} Status
+        %th{:scope => "col"} Reason
     %tbody
       - @transactions.each do |transaction|
         %tr
           %td= transaction.tx_id
+          %td= I18n.l(transaction.created_at)
           %td= transaction.transaction_type
           %td.amount
             - amount = transaction.actual_amount(current_wallet)
@@ -23,5 +26,8 @@
           %td{ class: target_wallet_address == current_wallet.address ? 'your-wallet' : '' }= target_wallet_address
           %td.status
             %span{ class: transaction.status }= transaction.status.capitalize
+          %td
+            - if current_wallet == transaction.source_wallet
+              = transaction.reason.try(:[], 'message')
 - else
   %h2.text-center You have no transactions

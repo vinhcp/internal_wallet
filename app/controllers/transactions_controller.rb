@@ -3,7 +3,8 @@ class TransactionsController < ApplicationController
   before_action :new_transaction, only: %i[new create]
 
   def index
-    @transactions = Transaction.for_wallet(current_wallet).includes(:source_wallet, :target_wallet)
+    @transactions = Transaction.for_wallet(current_wallet)
+                               .includes(:source_wallet, :target_wallet)
   end
 
   def new; end

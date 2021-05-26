@@ -3,5 +3,5 @@
     = hidden_field_tag :type, params[:type]
     = f.input :amount, as: :numeric, label: 'How many money?', wrapper_html: { class: 'form-group' }, input_html: { class: 'form-control', placeholder: 'Enter amount' }
     - if params[:type] == 'transfer'
-      = f.input :target_wallet_address, label: 'Which wallet will be received?', wrapper_html: { class: 'form-group' }, input_html: { class: 'form-control', placeholder: 'Enter wallet address' }
+      = f.input :target_wallet_address, label: 'Which wallet will be received?', wrapper_html: { class: 'form-group' }, input_html: { class: 'form-control', placeholder: 'Enter wallet address', value: f.object.target_wallet_address || params[:transaction].try(:[], :target_wallet_address) }
     = f.button :submit, 'Submit', class: 'btn btn-info'

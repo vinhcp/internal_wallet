@@ -1,6 +1,8 @@
 class Transaction < ApplicationRecord
   include TransactionTypeManagement
 
+  default_scope { order(created_at: :desc) }
+
   TX_ID_LENGTH = 32
   MIN_AMOUNT = 1
   NEGATIVE_RATE = -1
@@ -25,10 +27,9 @@ class Transaction < ApplicationRecord
   before_validation :generate_tx_id
   before_validation :assign_wallet
 
-  def self.for_wallet(wallet)
-    where('source_wallet_id = :wallet_id or target_wallet_id = :wallet_id',
-          wallet_id: wallet.id)
-  end
+  scope :available, ->{ where(status: [Transaction.statuses[:processing], Transaction.statuses[:success]]) }
+  scope :for_wallet, -> (wallet) { where('source_wallet_id = :wallet_id or target_wallet_id = :wallet_id',
+                                   wallet_id: wallet.id) if wallet.present? }
 
   def negative_amount
     amount * NEGATIVE_RATE
