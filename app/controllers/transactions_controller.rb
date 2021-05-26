@@ -3,7 +3,7 @@ class TransactionsController < ApplicationController
   before_action :new_transaction, only: %i[new create]
 
   def index
-    @transactions = Transaction.for_wallet(current_user.wallet)
+    @transactions = Transaction.for_wallet(current_wallet).includes(:source_wallet, :target_wallet)
   end
 
   def new; end
@@ -28,5 +28,10 @@ class TransactionsController < ApplicationController
   def new_transaction
     attrs = params[:transaction] ? transaction_params.merge(user: current_user) : {}
     @transaction ||= Transaction.class_for_type(params[:type]).new(attrs)
+  end
+
+  helper_method :current_wallet
+  def current_wallet
+    @current_wallet ||= current_user.wallet
   end
 end

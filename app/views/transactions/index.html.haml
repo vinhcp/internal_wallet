@@ -14,9 +14,13 @@
         %tr
           %td= transaction.tx_id
           %td= transaction.transaction_type
-          %td= transaction.amount
-          %td= transaction.source_wallet.try(:address)
-          %td= transaction.target_wallet.try(:address)
+          %td.amount
+            - amount = transaction.actual_amount(current_wallet)
+            %span{ class: amount < 0 ? 'negative' : 'positive' }= amount
+          - source_wallet_address = transaction.source_wallet.try(:address)
+          - target_wallet_address = transaction.target_wallet.try(:address)  
+          %td{ class: source_wallet_address == current_wallet.address ? 'your-wallet' : '' }= source_wallet_address
+          %td{ class: target_wallet_address == current_wallet.address ? 'your-wallet' : '' }= target_wallet_address
           %td.status
             %span{ class: transaction.status }= transaction.status.capitalize
 - else

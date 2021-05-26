@@ -7,4 +7,15 @@
       color: green;
     }
   }
+  td.amount {
+    span.negative {
+      color: red;
+    }
+    span.positive {
+      color: green;
+    }
+  }
+  td.your-wallet {
+    font-weight: bold;
+  }
 }
